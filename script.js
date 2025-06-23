@@ -43,3 +43,7 @@ function round() {
   const winner = whoWon(getComputerChoice(), getHumamChoice())
   updateScore(winner)
 }
+
+document.getElementById("choice").onchange = function() {
+  console.log(document.getElementById("choice").value)
+}

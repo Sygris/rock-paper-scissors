@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
     <title>Rock Paper Scissors</title>
   </head>
   <body>
@@ -13,13 +12,20 @@
     </header>
     <main>
       <h1 class="title">ROCK PAPER SCISSOR</h1>
-
+      
+      <label for="choice">Player Choice</label>
+      <select name="choice" id="choice">
+        <option value="rock" selected>Rock</option>
+        <option value="paper">Paper</option>
+        <option value="scissors">Scissors</option>
+      </select>
       <p id="player_score">Player Score: </p>
       <p id="computer_score">Computer Score:</p>
       <button type="button">Play</button>
     </main>
     <footer>
-
+      
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>
