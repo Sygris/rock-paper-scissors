@@ -5,6 +5,11 @@
   box-sizing: border-box;
 }
 
+.versus_image {
+  aspect-ratio: 1/1;
+  width: 150px;
+}
+
 body {
   background-color: #fff9d6;
   font-family: 'Roboto', sans-serif;
@@ -13,4 +18,24 @@ body {
 .title {
   color: #131004;
   text-align: center;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  margin: 0 auto;
 }

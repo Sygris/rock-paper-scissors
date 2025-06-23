@@ -12,15 +12,23 @@
     </header>
     <main>
       <h1 class="title">ROCK PAPER SCISSOR</h1>
-      
       <label for="choice">Player Choice</label>
       <select name="choice" id="choice">
         <option value="rock" selected>Rock</option>
         <option value="paper">Paper</option>
         <option value="scissors">Scissors</option>
       </select>
-      <p id="player_score">Player Score: </p>
-      <p id="computer_score">Computer Score:</p>
+      <div class="wrapper">
+        <div class="player">
+          <img id="player_choice_image" src="/img/rock.png" alt="player choice">
+          <p id="player_score">Player Score: </p>
+        </div>
+        <img class="versus_image" src="/img/versus.png" alt="versus">
+        <div class="player">
+          <img src="/img/rock.png" alt="Computer choice">
+          <p id="computer_score">Computer Score:</p>
+        </div>
+      </div>
       <button type="button">Play</button>
     </main>
     <footer>

@@ -44,6 +44,19 @@ function round() {
   updateScore(winner)
 }
 
-document.getElementById("choice").onchange = function() {
-  console.log(document.getElementById("choice").value)
+document.getElementById("choice").onchange = (event) => {
+  const image = document.getElementById("player_choice_image")
+  switch (event.target.value) {
+    case "rock":
+      image.src = "/img/rock.png"
+      break;
+    case "paper":
+      image.src = "/img/paper.png"
+      break;
+    case "scissors":
+      image.src = "/img/scissors.png"
+      break;
+    default:
+      break;
+  }
 }
