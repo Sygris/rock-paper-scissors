@@ -7,7 +7,7 @@
 
 .versus_image {
   aspect-ratio: 1/1;
-  width: 150px;
+  width: 350px;
 }
 
 body {
@@ -15,23 +15,38 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+}
+
+.container--column {
+  flex-direction: column;
+}
+
+.container--row {
+  flex-direction: row;
+}
+
 .title {
   color: #131004;
   text-align: center;
 }
 
-.wrapper {
-  width: 100%;
-  display: flex;
+.player {
+  margin: 5rem 1rem;
   justify-content: center;
   align-items: center;
 }
 
-.player {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.players__choice {
+  aspect-ratio: 1/1;
+  max-width: 350px;
 }
 
 button {

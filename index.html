@@ -12,24 +12,26 @@
     </header>
     <main>
       <h1 class="title">ROCK PAPER SCISSOR</h1>
-      <label for="choice">Player Choice</label>
-      <select name="choice" id="choice">
-        <option value="rock" selected>Rock</option>
-        <option value="paper">Paper</option>
-        <option value="scissors">Scissors</option>
-      </select>
-      <div class="wrapper">
-        <div class="player">
-          <img id="player_choice_image" src="/img/rock.png" alt="player choice">
-          <p id="player_score">Player Score: </p>
+      <div class="wrapper container--column">
+        <label for="choice">Player Choice</label>
+        <select name="choice" id="choice">
+          <option value="Rock" selected>Rock</option>
+          <option value="Paper">Paper</option>
+          <option value="Scissors">Scissors</option>
+        </select>
+        <div class="wrapper">
+          <div class="player container container--column">
+            <img id="player_choice_image" class="players__choice" src="/img/rock.png" alt="player choice">
+            <p id="player_score">Player Score: </p>
+          </div>
+          <img class="versus_image" src="/img/versus.png" alt="versus">
+          <div class="player container container--column">
+            <img id="computer_choice_image" class="players__choice" src="/img/rock.png" alt="Computer choice">
+            <p id="computer_score">Computer Score:</p>
+          </div>
         </div>
-        <img class="versus_image" src="/img/versus.png" alt="versus">
-        <div class="player">
-          <img src="/img/rock.png" alt="Computer choice">
-          <p id="computer_score">Computer Score:</p>
-        </div>
+        <button onclick="round();" type="button">Play</button>
       </div>
-      <button type="button">Play</button>
     </main>
     <footer>
       

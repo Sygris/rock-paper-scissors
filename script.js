@@ -2,11 +2,13 @@ let playerScore = 0
 let computerScore = 0
 
 function getComputerChoice() {
-  return Math.floor(Math.random() * 3)
+  const choice = Math.floor((Math.random() * 3))
+  changeChoiceImage(document.getElementById("computer_choice_image"), choice)
+  return choice
 }
 
 function getHumamChoice() {
-  return prompt()
+  return document.getElementById("choice").value
 }
 
 function whoWon(computerChoice, humanChoice) {
@@ -17,13 +19,13 @@ function whoWon(computerChoice, humanChoice) {
 
   switch (computerChoice) {
     case 0:
-      return humanChoice == 2 ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == "Scissors"  ? "COMPUTER WINS" : "PLAYER WINS"
       break;
     case 1:
-      return humanChoice == 0 ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == "Rock" ? "COMPUTER WINS" : "PLAYER WINS"
       break;
     case 2:
-      return humanChoice == 1 ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == "Paper" ? "COMPUTER WINS" : "PLAYER WINS"
       break;
     default:
       return "Your mom"
@@ -45,16 +47,22 @@ function round() {
 }
 
 document.getElementById("choice").onchange = (event) => {
-  const image = document.getElementById("player_choice_image")
-  switch (event.target.value) {
-    case "rock":
-      image.src = "/img/rock.png"
+  changeChoiceImage(document.getElementById("player_choice_image"), event.target.value)
+}
+
+function changeChoiceImage(element, value) {
+  switch (value) {
+    case 0:
+    case "Rock":
+      element.src = "/img/rock.png"
       break;
-    case "paper":
-      image.src = "/img/paper.png"
+    case 1:
+    case "Paper":
+      element.src = "/img/paper.png"
       break;
-    case "scissors":
-      image.src = "/img/scissors.png"
+    case 2:
+    case "Scissors":
+      element.src = "/img/scissors.png"
       break;
     default:
       break;
