@@ -1,0 +1,16 @@
+/* BASIC RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff9d6;
+  font-family: 'Roboto', sans-serif;
+}
+
+.title {
+  color: #131004;
+  text-align: center;
+}
