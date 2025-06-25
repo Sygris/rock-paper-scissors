@@ -35,8 +35,8 @@ function whoWon(computerChoice, humanChoice) {
 
 const updateScoreUI = function()
 {
-  document.getElementById("player_score").textContent = playerScore
-  document.getElementById("computer_score").textContent = computerScore
+  document.getElementById("player_score").textContent = `Player: ${playerScore}`
+  document.getElementById("computer_score").textContent = `Computer: ${computerScore}`
 }
 
 function updateScore(winner) {
