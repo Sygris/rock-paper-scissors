@@ -48,7 +48,7 @@ header {
   color: #5f1155;
 }
 
-.winner__text {
+#winner__text {
   font-size: 2.5rem;
   margin-top: 2rem;
 }

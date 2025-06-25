@@ -1,19 +1,32 @@
+// Logic Variables
 let playerScore = 0
 let computerScore = 0
+let humanChoice, computerChoice
+
+// UI Elements
+const playerChoiceImage = document.getElementById("player_choice_image")
+const computerChoiceImage = document.getElementById("computer_choice_image")
+const playerChoice = document.getElementById("choice")
+const playerScoreUI = document.getElementById("player_score")
+const computerScoreUI = document.getElementById("computer_score")
+const winnerText = document.getElementById("winner__text")
+const winnerTextDescription = document.getElementById("winner__text__description")
 
 // Changes player choice image when player picks their choice on the dropdown menu
 document.getElementById("choice").onchange = (event) => {
-  changeChoiceImage(document.getElementById("player_choice_image"), event.target.value)
+  changeChoiceImage(playerChoiceImage, event.target.value)
+  humanChoice = event.target.value
 }
 
 function getComputerChoice() {
-  const choice = Math.floor(Math.random() * 3)
-  changeChoiceImage(document.getElementById("computer_choice_image"), choice)
-  return choice
+  computerChoice = Math.floor(Math.random() * 3)
+  changeChoiceImage(computerChoiceImage, computerChoice)
+  return computerChoice
 }
 
 function getHumamChoice() {
-  return filterPlayerChoice(document.getElementById("choice").value)
+  humanChoice = filterPlayerChoice(playerChoice.value)
+  return humanChoice
 }
 
 function whoWon(computerChoice, humanChoice) {
@@ -22,11 +35,11 @@ function whoWon(computerChoice, humanChoice) {
   // 0 - Rock, 1 - Paper, 2 - Scissor
   switch (computerChoice) {
     case 0:
-      return humanChoice == 2  ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == 2  ? "COMPUTER" : "PLAYER"
     case 1:
-      return humanChoice == 0 ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == 0 ? "COMPUTER" : "PLAYER"
     case 2:
-      return humanChoice == 1 ? "COMPUTER WINS" : "PLAYER WINS"
+      return humanChoice == 1 ? "COMPUTER" : "PLAYER"
     default:
       return "Something went wrong"
   }
@@ -35,20 +48,39 @@ function whoWon(computerChoice, humanChoice) {
 
 const updateScoreUI = function()
 {
-  document.getElementById("player_score").textContent = `Player: ${playerScore}`
-  document.getElementById("computer_score").textContent = `Computer: ${computerScore}`
+  playerScoreUI.textContent = `Player: ${playerScore}`
+  computerScoreUI.textContent = `Computer: ${computerScore}`
 }
 
 function updateScore(winner) {
-  if (winner.includes("TIE")) return
-  winner.includes("PLAYER") ? playerScore++ : computerScore++
+  if (winner === "TIE") return
+  winner === "PLAYER" ? playerScore++ : computerScore++
   updateScoreUI()
 }
 
+function updateGameUI(winner) {
+  switch (winner) {
+    case "COMPUTER":
+      winnerText.textContent = "Computer wins!";
+      winnerTextDescription.textContent = `${computerChoice} beats ${humanChoice}`;
+      break;
+    case "PLAYER":
+      winnerText.textContent = "Player wins!";
+      winnerTextDescription.textContent = `${humanChoice} beats ${computerChoice}`;
+      break;
+    case "TIE":
+      winnerText.textContent = "It´s a tie!";
+      winnerTextDescription.textContent = `${humanChoice} ties with ${computerChoice}`;
+      break;
+    default:
+      break;
+  }
+}
 
 function round() {
   const winner = whoWon(getComputerChoice(), getHumamChoice())
   updateScore(winner)
+  updateGameUI(winner)
 }
 
 function reset() {
