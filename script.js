@@ -1,6 +1,11 @@
 let playerScore = 0
 let computerScore = 0
 
+// Changes player choice image when player picks their choice on the dropdown menu
+document.getElementById("choice").onchange = (event) => {
+  changeChoiceImage(document.getElementById("player_choice_image"), event.target.value)
+}
+
 function getComputerChoice() {
   const choice = Math.floor(Math.random() * 3)
   changeChoiceImage(document.getElementById("computer_choice_image"), choice)
@@ -12,11 +17,9 @@ function getHumamChoice() {
 }
 
 function whoWon(computerChoice, humanChoice) {
-  console.log(`Player choice = ${humanChoice} | Computer choice ${computerChoice}`)
-
-  // 0 - Rock, 1 - Paper, 2 - Scissor
   if(computerChoice == humanChoice) return "TIE"
-
+  
+  // 0 - Rock, 1 - Paper, 2 - Scissor
   switch (computerChoice) {
     case 0:
       return humanChoice == 2  ? "COMPUTER WINS" : "PLAYER WINS"
@@ -30,20 +33,28 @@ function whoWon(computerChoice, humanChoice) {
 
 }
 
-function updateScore(winner) {
-  if (winner.includes("TIE")) return
-  winner.includes("PLAYER") ? playerScore++ : computerScore++
+const updateScoreUI = function()
+{
   document.getElementById("player_score").textContent = playerScore
   document.getElementById("computer_score").textContent = computerScore
 }
+
+function updateScore(winner) {
+  if (winner.includes("TIE")) return
+  winner.includes("PLAYER") ? playerScore++ : computerScore++
+  updateScoreUI()
+}
+
 
 function round() {
   const winner = whoWon(getComputerChoice(), getHumamChoice())
   updateScore(winner)
 }
 
-document.getElementById("choice").onchange = (event) => {
-  changeChoiceImage(document.getElementById("player_choice_image"), event.target.value)
+function reset() {
+  playerScore = 0
+  computerScore = 0
+  updateScoreUI()
 }
 
 function changeChoiceImage(element, value) {
