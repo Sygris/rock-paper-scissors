@@ -2,13 +2,13 @@ let playerScore = 0
 let computerScore = 0
 
 function getComputerChoice() {
-  const choice = Math.floor((Math.random() * 3))
+  const choice = Math.floor(Math.random() * 3)
   changeChoiceImage(document.getElementById("computer_choice_image"), choice)
   return choice
 }
 
 function getHumamChoice() {
-  return document.getElementById("choice").value
+  return filterPlayerChoice(document.getElementById("choice").value)
 }
 
 function whoWon(computerChoice, humanChoice) {
@@ -19,17 +19,13 @@ function whoWon(computerChoice, humanChoice) {
 
   switch (computerChoice) {
     case 0:
-      return humanChoice == "Scissors"  ? "COMPUTER WINS" : "PLAYER WINS"
-      break;
+      return humanChoice == 2  ? "COMPUTER WINS" : "PLAYER WINS"
     case 1:
-      return humanChoice == "Rock" ? "COMPUTER WINS" : "PLAYER WINS"
-      break;
+      return humanChoice == 0 ? "COMPUTER WINS" : "PLAYER WINS"
     case 2:
-      return humanChoice == "Paper" ? "COMPUTER WINS" : "PLAYER WINS"
-      break;
+      return humanChoice == 1 ? "COMPUTER WINS" : "PLAYER WINS"
     default:
-      return "Your mom"
-      break;
+      return "Something went wrong"
   }
 
 }
@@ -37,8 +33,8 @@ function whoWon(computerChoice, humanChoice) {
 function updateScore(winner) {
   if (winner.includes("TIE")) return
   winner.includes("PLAYER") ? playerScore++ : computerScore++
-  document.getElementById("player_score").textContent = `Player Score = ${playerScore}`
-  document.getElementById("computer_score").textContent = `Computer Score = ${computerScore}`
+  document.getElementById("player_score").textContent = playerScore
+  document.getElementById("computer_score").textContent = computerScore
 }
 
 function round() {
@@ -64,6 +60,19 @@ function changeChoiceImage(element, value) {
     case "Scissors":
       element.src = "/img/scissors.png"
       break;
+    default:
+      break;
+  }
+}
+
+function filterPlayerChoice(choice) {
+  switch (choice) {
+    case "Rock":
+      return 0
+    case "Paper":
+      return 1
+    case "Scissors":
+      return 2
     default:
       break;
   }
