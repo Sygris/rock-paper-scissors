@@ -3,14 +3,22 @@ let playerScore = 0
 let computerScore = 0
 let humanChoice, computerChoice
 
+// Enum with helper function
+const CHOICES = {
+  ROCK: 0,
+  PAPER: 1,
+  SCISSORS: 2,
+  toString: (val) => ["Rock", "Paper", "Scissors"][val]
+}
+
 // UI Elements
 const playerChoiceImage = document.getElementById("player_choice_image")
 const computerChoiceImage = document.getElementById("computer_choice_image")
 const playerChoice = document.getElementById("choice")
 const playerScoreUI = document.getElementById("player_score")
 const computerScoreUI = document.getElementById("computer_score")
-const winnerText = document.getElementById("winner__text")
-const winnerTextDescription = document.getElementById("winner__text__description")
+const winnerText = document.getElementById("winner-text")
+const winnerTextDescription = document.getElementById("winner-text-description")
 
 // Changes player choice image when player picks their choice on the dropdown menu
 document.getElementById("choice").onchange = (event) => {
@@ -18,36 +26,45 @@ document.getElementById("choice").onchange = (event) => {
   humanChoice = event.target.value
 }
 
+// Adds onclick behaviour to buttons
+document.getElementsByClassName("btn--play")[0].addEventListener("click", round)
+document.getElementsByClassName("btn--reset")[0].addEventListener("click", reset)
+
+// Retruns computer choise
 function getComputerChoice() {
+  // Generates a random number between 0 - 2
   computerChoice = Math.floor(Math.random() * 3)
+  // Updates computer choice UI
   changeChoiceImage(computerChoiceImage, computerChoice)
   return computerChoice
 }
 
+// Returns player choice
 function getHumamChoice() {
   humanChoice = filterPlayerChoice(playerChoice.value)
   return humanChoice
 }
 
+// Returns who the winner is
 function whoWon(computerChoice, humanChoice) {
-  if(computerChoice == humanChoice) return "TIE"
-  
+  // Guard clause in case of tie
+  if (computerChoice == humanChoice) return "TIE"
+
   // 0 - Rock, 1 - Paper, 2 - Scissor
   switch (computerChoice) {
-    case 0:
-      return humanChoice == 2  ? "COMPUTER" : "PLAYER"
-    case 1:
-      return humanChoice == 0 ? "COMPUTER" : "PLAYER"
-    case 2:
-      return humanChoice == 1 ? "COMPUTER" : "PLAYER"
+    case CHOICES.ROCK:
+      return humanChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
+    case CHOICES.PAPER:
+      return humanChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
+    case CHOICES.SCISSORS:
+      return humanChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
     default:
       return "Something went wrong"
   }
 
 }
 
-const updateScoreUI = function()
-{
+const updateScoreUI = function () {
   playerScoreUI.textContent = `Player: ${playerScore}`
   computerScoreUI.textContent = `Computer: ${computerScore}`
 }
@@ -62,15 +79,15 @@ function updateGameUI(winner) {
   switch (winner) {
     case "COMPUTER":
       winnerText.textContent = "Computer wins!";
-      winnerTextDescription.textContent = `${computerChoice} beats ${humanChoice}`;
+      winnerTextDescription.textContent = `${CHOICES.toString(computerChoice)} beats ${CHOICES.toString(humanChoice)}`;
       break;
     case "PLAYER":
       winnerText.textContent = "Player wins!";
-      winnerTextDescription.textContent = `${humanChoice} beats ${computerChoice}`;
+      winnerTextDescription.textContent = `${CHOICES.toString(humanChoice)} beats ${CHOICES.toString(computerChoice)}`;
       break;
     case "TIE":
       winnerText.textContent = "It´s a tie!";
-      winnerTextDescription.textContent = `${humanChoice} ties with ${computerChoice}`;
+      winnerTextDescription.textContent = `${CHOICES.toString(humanChoice)} ties with ${CHOICES.toString(computerChoice)}`;
       break;
     default:
       break;
@@ -93,15 +110,15 @@ function changeChoiceImage(element, value) {
   switch (value) {
     case 0:
     case "Rock":
-      element.src = "/img/rock.png"
+      element.src = "./img/rock.png"
       break;
     case 1:
     case "Paper":
-      element.src = "/img/paper.png"
+      element.src = "./img/paper.png"
       break;
     case 2:
     case "Scissors":
-      element.src = "/img/scissors.png"
+      element.src = "./img/scissors.png"
       break;
     default:
       break;
@@ -120,3 +137,4 @@ function filterPlayerChoice(choice) {
       break;
   }
 }
+
