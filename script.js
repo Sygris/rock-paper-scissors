@@ -27,23 +27,45 @@ document.getElementById("choice").onchange = (event) => {
 }
 
 // Adds onclick behaviour to buttons
-document.getElementsByClassName("btn--play")[0].addEventListener("click", round)
-document.getElementsByClassName("btn--reset")[0].addEventListener("click", reset)
+document.querySelector(".btn--play").addEventListener("click", round)
+document.querySelector(".btn--reset").addEventListener("click", reset)
 
-// Retruns computer choise
-function getComputerChoice() {
-  // Generates a random number between 0 - 2
-  computerChoice = Math.floor(Math.random() * 3)
-  // Updates computer choice UI
-  changeChoiceImage(computerChoiceImage, computerChoice)
-  return computerChoice
+class Game {
+  constructor() {
+    this.playerScore = 0
+    this.computerChoice = 0
+  }
+
+  // Retruns computer choise
+  getComputerChoice() {
+    // Generates a random number between 0 - 2
+    computerChoice = Math.floor(Math.random() * 3)
+    // Updates computer choice UI
+    changeChoiceImage(computerChoiceImage, computerChoice)
+    return computerChoice
+  }
+
+  // Returns player choice
+  getHumanChoice() {
+    humanChoice = filterPlayerChoice(playerChoice.value)
+    return humanChoice
+  }
 }
 
-// Returns player choice
-function getHumamChoice() {
-  humanChoice = filterPlayerChoice(playerChoice.value)
-  return humanChoice
-}
+// // Retruns computer choise
+// function getComputerChoice() {
+//   // Generates a random number between 0 - 2
+//   computerChoice = Math.floor(Math.random() * 3)
+//   // Updates computer choice UI
+//   changeChoiceImage(computerChoiceImage, computerChoice)
+//   return computerChoice
+// }
+
+// // Returns player choice
+// function getHumanChoice() {
+//   humanChoice = filterPlayerChoice(playerChoice.value)
+//   return humanChoice
+// }
 
 // Returns who the winner is
 function whoWon(computerChoice, humanChoice) {
@@ -61,18 +83,17 @@ function whoWon(computerChoice, humanChoice) {
     default:
       return "Something went wrong"
   }
-
-}
-
-const updateScoreUI = function () {
-  playerScoreUI.textContent = `Player: ${playerScore}`
-  computerScoreUI.textContent = `Computer: ${computerScore}`
 }
 
 function updateScore(winner) {
   if (winner === "TIE") return
   winner === "PLAYER" ? playerScore++ : computerScore++
   updateScoreUI()
+}
+
+const updateScoreUI = function () {
+  playerScoreUI.textContent = `Player: ${playerScore}`
+  computerScoreUI.textContent = `Computer: ${computerScore}`
 }
 
 function updateGameUI(winner) {
@@ -95,15 +116,27 @@ function updateGameUI(winner) {
 }
 
 function round() {
-  const winner = whoWon(getComputerChoice(), getHumamChoice())
+  const winner = whoWon(getComputerChoice(), getHumanChoice())
+
+
   updateScore(winner)
   updateGameUI(winner)
+  if (computerScore === 5 || humanChoice === 5) {
+    alert(`Game Finished - ${winner} won!`)
+    reset()
+  }
+}
+
+function resetGameUI() {
+  winnerText.textContent = "Choose your hand!"
+  winnerTextDescription.textContent = "First to get 5 points wins"
+  updateScoreUI()
 }
 
 function reset() {
   playerScore = 0
   computerScore = 0
-  updateScoreUI()
+  resetGameUI()
 }
 
 function changeChoiceImage(element, value) {
