@@ -20,6 +20,8 @@ const computerScoreUI = document.getElementById("computer_score")
 const winnerText = document.getElementById("winner-text")
 const winnerTextDescription = document.getElementById("winner-text-description")
 
+let game = new Game()
+
 // Changes player choice image when player picks their choice on the dropdown menu
 document.getElementById("choice").onchange = (event) => {
   changeChoiceImage(playerChoiceImage, event.target.value)
@@ -27,7 +29,7 @@ document.getElementById("choice").onchange = (event) => {
 }
 
 // Adds onclick behaviour to buttons
-document.querySelector(".btn--play").addEventListener("click", round)
+document.querySelector(".btn--play").addEventListener("click", game.round)
 document.querySelector(".btn--reset").addEventListener("click", reset)
 
 class Game {
@@ -50,6 +52,41 @@ class Game {
     humanChoice = filterPlayerChoice(playerChoice.value)
     return humanChoice
   }
+
+  // Returns who the winner is
+  whoWon(computerChoice, humanChoice) {
+    // Guard clause in case of tie
+    if (computerChoice == humanChoice) return "TIE"
+
+    // 0 - Rock, 1 - Paper, 2 - Scissor
+    switch (computerChoice) {
+      case CHOICES.ROCK:
+        return humanChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
+      case CHOICES.PAPER:
+        return humanChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
+      case CHOICES.SCISSORS:
+        return humanChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
+      default:
+        return "Something went wrong"
+    }
+  }
+
+  updateScore(winner) {
+    if (winner === "TIE") return
+    winner === "PLAYER" ? playerScore++ : computerScore++
+    updateScoreUI()
+  }
+
+  round() {
+    const winner = whoWon(getComputerChoice(), getHumanChoice())
+
+    updateScore(winner)
+    updateGameUI(winner)
+    if (computerScore === 5 || humanChoice === 5) {
+      alert(`Game Finished - ${winner} won!`)
+      reset()
+    }
+  }
 }
 
 // // Retruns computer choise
@@ -67,29 +104,29 @@ class Game {
 //   return humanChoice
 // }
 
-// Returns who the winner is
-function whoWon(computerChoice, humanChoice) {
-  // Guard clause in case of tie
-  if (computerChoice == humanChoice) return "TIE"
+// // Returns who the winner is
+// function whoWon(computerChoice, humanChoice) {
+//   // Guard clause in case of tie
+//   if (computerChoice == humanChoice) return "TIE"
 
-  // 0 - Rock, 1 - Paper, 2 - Scissor
-  switch (computerChoice) {
-    case CHOICES.ROCK:
-      return humanChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
-    case CHOICES.PAPER:
-      return humanChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
-    case CHOICES.SCISSORS:
-      return humanChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
-    default:
-      return "Something went wrong"
-  }
-}
+//   // 0 - Rock, 1 - Paper, 2 - Scissor
+//   switch (computerChoice) {
+//     case CHOICES.ROCK:
+//       return humanChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
+//     case CHOICES.PAPER:
+//       return humanChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
+//     case CHOICES.SCISSORS:
+//       return humanChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
+//     default:
+//       return "Something went wrong"
+//   }
+// }
 
-function updateScore(winner) {
-  if (winner === "TIE") return
-  winner === "PLAYER" ? playerScore++ : computerScore++
-  updateScoreUI()
-}
+// function updateScore(winner) {
+//   if (winner === "TIE") return
+//   winner === "PLAYER" ? playerScore++ : computerScore++
+//   updateScoreUI()
+// }
 
 const updateScoreUI = function () {
   playerScoreUI.textContent = `Player: ${playerScore}`
@@ -115,17 +152,17 @@ function updateGameUI(winner) {
   }
 }
 
-function round() {
-  const winner = whoWon(getComputerChoice(), getHumanChoice())
+// function round() {
+//   const winner = whoWon(getComputerChoice(), getHumanChoice())
 
 
-  updateScore(winner)
-  updateGameUI(winner)
-  if (computerScore === 5 || humanChoice === 5) {
-    alert(`Game Finished - ${winner} won!`)
-    reset()
-  }
-}
+//   updateScore(winner)
+//   updateGameUI(winner)
+//   if (computerScore === 5 || humanChoice === 5) {
+//     alert(`Game Finished - ${winner} won!`)
+//     reset()
+//   }
+// }
 
 function resetGameUI() {
   winnerText.textContent = "Choose your hand!"
