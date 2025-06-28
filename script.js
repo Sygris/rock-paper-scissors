@@ -20,18 +20,6 @@ const computerScoreUI = document.getElementById("computer_score")
 const winnerText = document.getElementById("winner-text")
 const winnerTextDescription = document.getElementById("winner-text-description")
 
-let game = new Game()
-
-// Changes player choice image when player picks their choice on the dropdown menu
-document.getElementById("choice").onchange = (event) => {
-  changeChoiceImage(playerChoiceImage, event.target.value)
-  humanChoice = event.target.value
-}
-
-// Adds onclick behaviour to buttons
-document.querySelector(".btn--play").addEventListener("click", game.round)
-document.querySelector(".btn--reset").addEventListener("click", reset)
-
 class Game {
   constructor() {
     this.playerScore = 0
@@ -78,9 +66,9 @@ class Game {
   }
 
   round() {
-    const winner = whoWon(getComputerChoice(), getHumanChoice())
+    const winner = this.whoWon(this.getComputerChoice(), this.getHumanChoice())
 
-    updateScore(winner)
+    this.updateScore(winner)
     updateGameUI(winner)
     if (computerScore === 5 || humanChoice === 5) {
       alert(`Game Finished - ${winner} won!`)
@@ -88,6 +76,19 @@ class Game {
     }
   }
 }
+
+let game = new Game()
+
+// Changes player choice image when player picks their choice on the dropdown menu
+document.getElementById("choice").onchange = (event) => {
+  changeChoiceImage(playerChoiceImage, event.target.value)
+  humanChoice = event.target.value
+}
+
+// Adds onclick behaviour to buttons
+document.querySelector(".btn--play").addEventListener("click", () => game.round())
+document.querySelector(".btn--reset").addEventListener("click", reset)
+
 
 // // Retruns computer choise
 // function getComputerChoice() {
