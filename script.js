@@ -4,7 +4,8 @@ const CHOICES = {
   ROCK: 0,
   PAPER: 1,
   SCISSORS: 2,
-  toString: (val) => ["Rock", "Paper", "Scissors"][val]
+  toString: (val) => ["Rock", "Paper", "Scissors"][val],
+  toInt: (val) => ["Rock", "Paper", "Scissors"].indexOf(val)
 }
 
 // UI Elements
@@ -16,26 +17,37 @@ const computerScoreUI = document.getElementById("computer_score")
 const winnerText = document.getElementById("winner-text")
 const winnerTextDescription = document.getElementById("winner-text-description")
 
-class Game {  
-  constructor() {
+class Game {
+  constructor(gameUI) {
     this.playerScore = 0
     this.computerChoice = 0
     this.humanChoice = null
     this.computerChoice = null
+    this.round = this.round.bind(this)
+    this.gameUI = gameUI
   }
 
   // Retruns computer choise
   getComputerChoice() {
-    // Generates a random number between 0 - 2
-    this.computerChoice = Math.floor(Math.random() * 3)
+    // Generates a random number between 0 to how many choices there are
+    // Length - 2 (because there are 2 helper functions inside the enum CHOICES)
+    this.computerChoice = Math.floor(Math.random() * (Object.keys(CHOICES).length - 2))
     // Updates computer choice UI
-    changeChoiceImage(computerChoiceImage, this.computerChoice)
+    this.gameUI.changeChoiceImage(computerChoiceImage, this.computerChoice)
     return this.computerChoice
+  }
+
+  filterPlayerChoice(choice) {
+    switch (choice) {
+      case "Rock":  return CHOICES.ROCK
+      case "Paper": return CHOICES.PAPER
+      case "Scissors": return CHOICES.SCISSORS
+    }
   }
 
   // Returns player choice
   getHumanChoice() {
-    this.humanChoice = filterPlayerChoice(playerChoice.value)
+    this.humanChoice = this.filterPlayerChoice(playerChoice.value)
     return this.humanChoice
   }
 
@@ -60,7 +72,7 @@ class Game {
   updateScore(winner) {
     if (winner === "TIE") return
     winner === "PLAYER" ? this.playerScore++ : this.computerScore++
-    updateScoreUI()
+    this.gameUI.updateScoreUI(this.playerScore, this.computerChoice)
   }
 
   round() {
@@ -68,7 +80,7 @@ class Game {
     this.getComputerChoice()
     const winner = this.whoWon()
     this.updateScore(winner)
-    updateGameUI(winner)
+    this.gameUI.updateGameUI(winner, this.humanChoice, this.computerChoice)
 
     if (this.computerScore === 5 || this.playerScore === 5) {
       alert(`Game Finished - ${winner} won!`)
@@ -81,65 +93,48 @@ class Game {
     this.computerScore = 0
     resetGameUI()
   }
-
-  filterPlayerChoice(choice) {
-    switch (choice) {
-      case "Rock":
-        return 0
-      case "Paper":
-        return 1
-      case "Scissors":
-        return 2
-      default:
-        break;
-    }
-  }
 }
 
-
 class GameUI {
-  updateScoreUI() {
+  updateScoreUI(playerScore, computerScore) {
     playerScoreUI.textContent = `Player: ${playerScore}`
     computerScoreUI.textContent = `Computer: ${computerScore}`
   }
-  
-  updateGameUI(winner) {
+
+  updateGameUI(winner, playerChoice, computerChoice) {
     switch (winner) {
       case "COMPUTER":
         winnerText.textContent = "Computer wins!";
-        winnerTextDescription.textContent = `${CHOICES.toString(computerChoice)} beats ${CHOICES.toString(humanChoice)}`;
+        winnerTextDescription.textContent = `${CHOICES.toString(computerChoice)} beats ${CHOICES.toString(playerChoice)}`;
         break;
       case "PLAYER":
         winnerText.textContent = "Player wins!";
-        winnerTextDescription.textContent = `${CHOICES.toString(humanChoice)} beats ${CHOICES.toString(computerChoice)}`;
+        winnerTextDescription.textContent = `${CHOICES.toString(playerChoice)} beats ${CHOICES.toString(computerChoice)}`;
         break;
       case "TIE":
         winnerText.textContent = "It´s a tie!";
-        winnerTextDescription.textContent = `${CHOICES.toString(humanChoice)} ties with ${CHOICES.toString(computerChoice)}`;
+        winnerTextDescription.textContent = `${CHOICES.toString(playerChoice)} ties with ${CHOICES.toString(computerChoice)}`;
         break;
       default:
         break;
     }
   }
-  
+
   resetGameUI() {
     winnerText.textContent = "Choose your hand!"
     winnerTextDescription.textContent = "First to get 5 points wins"
-    updateScoreUI()
+    this.updateScoreUI()
   }
 
   changeChoiceImage(element, value) {
     switch (value) {
       case 0:
-      case "Rock":
         element.src = "./img/rock.png"
         break;
       case 1:
-      case "Paper":
         element.src = "./img/paper.png"
         break;
       case 2:
-      case "Scissors":
         element.src = "./img/scissors.png"
         break;
       default:
@@ -148,15 +143,15 @@ class GameUI {
   }
 }
 
-let game = new Game()
 let gameUI = new GameUI()
+let game = new Game(gameUI)
 
 // Changes player choice image when player picks their choice on the dropdown menu
 document.getElementById("choice").onchange = (event) => {
-  changeChoiceImage(playerChoiceImage, event.target.value)
+  gameUI.changeChoiceImage(playerChoiceImage, CHOICES.toInt(event.target.value))
   humanChoice = event.target.value
 }
 
 // Adds onclick behaviour to buttons
 document.querySelector(".btn--play").addEventListener("click", () => game.round())
-document.querySelector(".btn--reset").addEventListener("click", reset)
+// document.querySelector(".btn--reset").addEventListener("click", reset)
