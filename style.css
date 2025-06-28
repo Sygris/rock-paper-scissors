@@ -54,8 +54,13 @@ header {
   margin-bottom: .5rem;
 }
 
+.test__container {
+  width: 100%;
+  justify-content: space-evenly;
+}
+
 .player {
-  margin: 5rem 1rem;
+  margin: 5rem 0;
   justify-content: center;
   align-items: center;
 }
@@ -74,6 +79,11 @@ header {
   aspect-ratio: 1/1;
   max-width: 100px;
   opacity: .8;
+}
+
+.versus__section, .computer__section {
+  position: relative;
+  right: 75px;
 }
 
 .score {
