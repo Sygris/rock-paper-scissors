@@ -16,13 +16,17 @@
         <p id="winner-text-description">First to score 5 points wins the game</p>
         <div class="wrapper">
           <div class="player container container--column">
-            <label for="choice" hidden>Player Choice</label>
+            <!-- <label for="choice" hidden>Player Choice</label>
             <select class="btn--dropdown" name="choice" id="choice">
               <option value="Rock" selected>Rock</option>
               <option value="Paper">Paper</option>
               <option value="Scissors">Scissors</option>
-            </select>
-            <img id="player_choice_image" class="players__choice" src="/img/rock.png" alt="player choice">
+            </select> -->
+            <div class="options__container container container--row">
+              <img class="options" src="./img/scissors.png" alt="Previous option">
+              <img id="player_choice_image" class="players__choice" src="/img/rock.png" alt="player choice">
+              <img class="options" src="./img/paper.png" alt="Previous option">
+            </div>
             <p id="player_score" class="score">Player: 0</p>
           </div>
           <img class="versus_image" src="/img/versus.png" alt="versus">

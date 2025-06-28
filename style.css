@@ -48,9 +48,10 @@ header {
   color: #5f1155;
 }
 
-#winner__text {
-  font-size: 2.5rem;
+#winner-text {
+  font-size: 2rem;
   margin-top: 2rem;
+  margin-bottom: .5rem;
 }
 
 .player {
@@ -62,6 +63,17 @@ header {
 .players__choice {
   aspect-ratio: 1/1;
   max-width: 250px;
+}
+
+.options__container {
+  justify-content: center;
+  align-items: center;
+}
+
+.options {
+  aspect-ratio: 1/1;
+  max-width: 100px;
+  opacity: .8;
 }
 
 .score {

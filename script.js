@@ -20,10 +20,9 @@ const winnerTextDescription = document.getElementById("winner-text-description")
 class Game {
   constructor(gameUI) {
     this.playerScore = 0
-    this.computerChoice = 0
-    this.humanChoice = null
+    this.computerScore = 0
+    this.playerChoice = null
     this.computerChoice = null
-    this.round = this.round.bind(this)
     this.gameUI = gameUI
   }
 
@@ -37,33 +36,29 @@ class Game {
     return this.computerChoice
   }
 
-  filterPlayerChoice(choice) {
-    switch (choice) {
-      case "Rock":  return CHOICES.ROCK
-      case "Paper": return CHOICES.PAPER
-      case "Scissors": return CHOICES.SCISSORS
-    }
-  }
-
   // Returns player choice
-  getHumanChoice() {
-    this.humanChoice = this.filterPlayerChoice(playerChoice.value)
-    return this.humanChoice
+  getPlayerChoice() {
+    const choice = CHOICES.toInt(playerChoice.value)
+    if (choice === -1) {
+      throw new Error("Invalid Choicde");
+    }
+    this.playerChoice = choice
+    return this.playerChoice
   }
 
   // Returns who the winner is
   whoWon() {
     // Guard clause in case of tie
-    if (this.computerChoice == this.humanChoice) return "TIE"
+    if (this.computerChoice == this.playerChoice) return "TIE"
 
     // 0 - Rock, 1 - Paper, 2 - Scissor
     switch (this.computerChoice) {
       case CHOICES.ROCK:
-        return this.humanChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
+        return this.playerChoice == CHOICES.SCISSORS ? "COMPUTER" : "PLAYER"
       case CHOICES.PAPER:
-        return this.humanChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
+        return this.playerChoice == CHOICES.ROCK ? "COMPUTER" : "PLAYER"
       case CHOICES.SCISSORS:
-        return this.humanChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
+        return this.playerChoice == CHOICES.PAPER ? "COMPUTER" : "PLAYER"
       default:
         return "Something went wrong"
     }
@@ -72,15 +67,20 @@ class Game {
   updateScore(winner) {
     if (winner === "TIE") return
     winner === "PLAYER" ? this.playerScore++ : this.computerScore++
-    this.gameUI.updateScoreUI(this.playerScore, this.computerChoice)
   }
-
+  
   round() {
-    this.getHumanChoice()
+    try {
+      this.getPlayerChoice()
+    } catch (error) {
+      alert("Please select Rock, Paper or Scissors before playing.")
+      return
+    }
     this.getComputerChoice()
     const winner = this.whoWon()
     this.updateScore(winner)
-    this.gameUI.updateGameUI(winner, this.humanChoice, this.computerChoice)
+    this.gameUI.updateScoreUI(this.playerScore, this.computerScore)
+    this.gameUI.updateGameUI(winner, this.playerChoice, this.computerChoice)
 
     if (this.computerScore === 5 || this.playerScore === 5) {
       alert(`Game Finished - ${winner} won!`)
@@ -91,7 +91,7 @@ class Game {
   reset() {
     this.playerScore = 0
     this.computerScore = 0
-    resetGameUI()
+    this.gameUI.resetGameUI(this.playerScore, this.computerScore)
   }
 }
 
@@ -120,10 +120,10 @@ class GameUI {
     }
   }
 
-  resetGameUI() {
+  resetGameUI(playerScore, computerScore) {
     winnerText.textContent = "Choose your hand!"
     winnerTextDescription.textContent = "First to get 5 points wins"
-    this.updateScoreUI()
+    this.updateScoreUI(playerScore, computerScore)
   }
 
   changeChoiceImage(element, value) {
@@ -148,10 +148,10 @@ let game = new Game(gameUI)
 
 // Changes player choice image when player picks their choice on the dropdown menu
 document.getElementById("choice").onchange = (event) => {
-  gameUI.changeChoiceImage(playerChoiceImage, CHOICES.toInt(event.target.value))
-  humanChoice = event.target.value
+  const intChoice = CHOICES.toInt(event.target.value)
+  gameUI.changeChoiceImage(playerChoiceImage, intChoice)
 }
 
 // Adds onclick behaviour to buttons
 document.querySelector(".btn--play").addEventListener("click", () => game.round())
-// document.querySelector(".btn--reset").addEventListener("click", reset)
+document.querySelector(".btn--reset").addEventListener("click", () => game.reset())
