@@ -9,7 +9,9 @@ const CHOICES = {
 }
 
 // UI Elements
+const playerPrevChoiceImage = document.getElementById("prev_choice")
 const playerChoiceImage = document.getElementById("player_choice_image")
+const playerNextChoiceImage = document.getElementById("next_choice")
 const computerChoiceImage = document.getElementById("computer_choice_image")
 const playerChoice = document.getElementById("choice")
 const playerScoreUI = document.getElementById("player_score")
@@ -21,7 +23,7 @@ class Game {
   constructor(gameUI) {
     this.playerScore = 0
     this.computerScore = 0
-    this.playerChoice = null
+    this.playerChoice = 0
     this.computerChoice = null
     this.gameUI = gameUI
   }
@@ -29,8 +31,8 @@ class Game {
   // Retruns computer choise
   getComputerChoice() {
     // Generates a random number between 0 to how many choices there are
-    // Length - 2 (because there are 2 helper functions inside the enum CHOICES)
-    this.computerChoice = Math.floor(Math.random() * (Object.keys(CHOICES).length - 2))
+    // Length - 3 (because there are 2 helper functions inside the enum CHOICES)
+    this.computerChoice = Math.floor(Math.random() * (Object.keys(CHOICES).length - 3))
     // Updates computer choice UI
     this.gameUI.changeChoiceImage(computerChoiceImage, this.computerChoice)
     return this.computerChoice
@@ -38,11 +40,6 @@ class Game {
 
   // Returns player choice
   getPlayerChoice() {
-    const choice = CHOICES.toInt(playerChoice.value)
-    if (choice === -1) {
-      throw new Error("Invalid Choicde");
-    }
-    this.playerChoice = choice
     return this.playerChoice
   }
 
@@ -91,6 +88,7 @@ class Game {
   reset() {
     this.playerScore = 0
     this.computerScore = 0
+    this.playerChoice = 0
     this.gameUI.resetGameUI(this.playerScore, this.computerScore)
   }
 }
@@ -123,6 +121,7 @@ class GameUI {
   resetGameUI(playerScore, computerScore) {
     winnerText.textContent = "Choose your hand!"
     winnerTextDescription.textContent = "First to get 5 points wins"
+    changeOption(0)
     this.updateScoreUI(playerScore, computerScore)
   }
 
@@ -146,12 +145,29 @@ class GameUI {
 let gameUI = new GameUI()
 let game = new Game(gameUI)
 
-// Changes player choice image when player picks their choice on the dropdown menu
-document.getElementById("choice").onchange = (event) => {
-  const intChoice = CHOICES.toInt(event.target.value)
-  gameUI.changeChoiceImage(playerChoiceImage, intChoice)
+function limitOption(direction) {
+  // If playerChoice + direction is less than 0 sets it to the end of the array
+  if (game.playerChoice + direction < 0) {
+    return Object.keys(CHOICES).length - 3
+  }
+  // If playerChoice + direction is bigger than the choices available it sets it to 0 (Rock)
+  else if(game.playerChoice + direction > Object.keys(CHOICES).length - 3) {
+    return CHOICES.ROCK
+  }
+  else {
+    return game.playerChoice + direction
+  }
+}
+
+function changeOption(direction) {
+  game.playerChoice = limitOption(direction)
+  gameUI.changeChoiceImage(playerPrevChoiceImage, limitOption(-1))
+  gameUI.changeChoiceImage(playerChoiceImage, game.playerChoice)
+  gameUI.changeChoiceImage(playerNextChoiceImage, limitOption(1))
 }
 
 // Adds onclick behaviour to buttons
 document.querySelector(".btn--play").addEventListener("click", () => game.round())
 document.querySelector(".btn--reset").addEventListener("click", () => game.reset())
+document.getElementById("prev_choice").addEventListener("click", () => changeOption(-1))
+document.getElementById("next_choice").addEventListener("click", () => changeOption(1))

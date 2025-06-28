@@ -57,6 +57,7 @@ header {
 .test__container {
   width: 100%;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .player {
@@ -79,6 +80,7 @@ header {
   aspect-ratio: 1/1;
   max-width: 100px;
   opacity: .8;
+  cursor: pointer;
 }
 
 .versus__section, .computer__section {
