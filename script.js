@@ -171,4 +171,3 @@ document.querySelector(".btn--play").addEventListener("click", () => game.round(
 document.querySelector(".btn--reset").addEventListener("click", () => game.reset())
 document.getElementById("prev_choice").addEventListener("click", () => changeOption(-1))
 document.getElementById("next_choice").addEventListener("click", () => changeOption(1))
-document.getElementById("light-dark-toggle").addEventListener("click", () => document.body.classList.toggle("light"))
