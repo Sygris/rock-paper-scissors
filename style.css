@@ -126,8 +126,7 @@ header {
 }
 
 .btn:hover {
-  /* opacity: .8; */
-  background-image: var(--gradient-hover);
+  opacity: .8;
 }
 
 footer {
